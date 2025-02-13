@@ -61,10 +61,10 @@ def write_traces_to_file(traces, output_file):
         file.write(f"Total Count: {counter}\n\n==================\n" + ''.join(content))
 
 @click.command()
-@click.option('--filter', required=False, default='*', help='Glob pattern to filter stack frames.')
 @click.option('--input-file', required=True, type=click.Path(exists=True), help='Path to the input trace file.')
 @click.option('--output-file', required=True, type=click.Path(), help='Path to the output file for filtered traces.')
-@click.option('--main-thread-only', required=False, default=False)
+@click.option('--filter', required=False, default='*', help='Glob pattern to filter stack frames, e.g. \'io.sentry.*\' will ouput all IPC calls containing the Sentry frames. Use \'*\' to show all stackframes from all processes.')
+@click.option('--main-thread-only', required=False, default=False, help='Filter IPC calls originating from the main thread.')
 def main(filter, input_file, output_file, main_thread_only):
     traces = load_traces(input_file)
     filtered_traces = filter_and_sort_traces(traces, filter, main_thread_only)
